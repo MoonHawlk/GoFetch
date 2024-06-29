@@ -53,13 +53,13 @@ Além disso, este projeto utiliza as seguintes bibliotecas Go:
     ```
 
 ## Uso
-
+    
 Execute o comando compilado para exibir as informações do sistema no terminal:
-
+    
 ```sh
 ./gofetch
 ```
-
+    
 O resultado será algo assim:
 ```
 +---------------------------------------------------+
@@ -73,16 +73,17 @@ O resultado será algo assim:
 | GPU: NVIDIA GeForce RTX 4060 Ti                   |
 +---------------------------------------------------+
 ```
+
 ## Contribuição
 Contribuições são bem-vindas! Para contribuir, siga os seguintes passos:
-
+    
 1. Fork o repositório.
 2. Crie um branch para sua feature (git checkout -b feature/feature-name).
 3. Commit suas mudanças (git commit -m 'Add some feature').
 4. Push para o branch (git push origin feature/feature-name).
 5. Abra um Pull Request.
-
+    
 ## Licença
 Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
-
-Feito por Filipe Moreno (2024) 💾.
+    
+Feito por Filipe Moreno 👨‍💻.
