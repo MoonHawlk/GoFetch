@@ -6,27 +6,31 @@ import (
 	"strings"
 
 	"github.com/fatih/color"
-	"github.com/matryer/try"
-	"github.com/shirou/gopsutil/cpu"
-	"github.com/shirou/gopsutil/host"
+	"github.com/shirou/gopsutil/host" // Deprecated, needs to be changed
 	"github.com/shirou/gopsutil/mem"
 )
 
+func getCPUInfo() (string, error) {
+	output, err := exec.Command("sysctl", "-n", "machdep.cpu.brand_string").Output()
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(string(output)), nil
+}
+
 func getGPUInfo() (string, error) {
-	var output []byte
-	err := try.Do(func(attempt int) (bool, error) {
-		var err error
-		output, err = exec.Command("wmic", "path", "win32_videocontroller", "get", "name").Output()
-		return attempt < 3, err
-	})
+	output, err := exec.Command("system_profiler", "SPDisplaysDataType").Output()
 	if err != nil {
 		return "", err
 	}
 
 	lines := strings.Split(string(output), "\n")
 	for _, line := range lines {
-		if trimmedLine := strings.TrimSpace(line); trimmedLine != "" && !strings.Contains(trimmedLine, "Name") {
-			return trimmedLine, nil
+		if strings.Contains(line, "Chipset Model:") {
+			parts := strings.Split(line, ":")
+			if len(parts) > 1 {
+				return strings.TrimSpace(parts[1]), nil
+			}
 		}
 	}
 	return "Unknown GPU", nil
@@ -66,7 +70,7 @@ func main() {
 		return
 	}
 
-	cpuInfo, err := cpu.Info()
+	cpuInfo, err := getCPUInfo()
 	if err != nil {
 		fmt.Println("Erro ao obter informações da CPU:", err)
 		return
@@ -94,7 +98,7 @@ func main() {
 		formatLine("Uptime", fmt.Sprintf("%d hours", uptime/3600), cyan),
 		formatLine("Total Memory", fmt.Sprintf("%v MB", memInfo.Total/1024/1024), cyan),
 		formatLine("Used Memory", fmt.Sprintf("%v MB", memInfo.Used/1024/1024), cyan),
-		formatLine("CPU", cpuInfo[0].ModelName, cyan),
+		formatLine("CPU", cpuInfo, cyan),
 		formatLine("GPU", gpuInfo, cyan),
 	}
 
