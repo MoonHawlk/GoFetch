@@ -34,8 +34,8 @@ Além disso, este projeto utiliza as seguintes bibliotecas Go:
 1. Clone o repositório para sua máquina local:
 
     ```sh
-    git clone https://github.com/username/repository-name.git
-    cd repository-name
+    git clone https://github.com/MoonHawlk/gofetch
+    cd gofetch
     ```
 
 2. Instale as dependências do projeto:
